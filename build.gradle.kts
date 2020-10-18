@@ -8,7 +8,6 @@ group = "me.devnatan.katan.plugin.argon2"
 version = "0.1.0"
 
 repositories {
-    mavenLocal()
     mavenCentral()
     jcenter()
     maven("https://jitpack.io")
@@ -16,7 +15,7 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("me.devnatan.katan:api:0.0.1")
+    compileOnly("com.github.KatanPanel:Katan:1606e48e9e") // 0.0.1
     implementation("de.mkammerer:argon2-jvm:2.7")
 }
 
@@ -28,6 +27,7 @@ val fatJar = task("fatJar", type = Jar::class) {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
+            freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
             jvmTarget = "1.8"
         }
     }
