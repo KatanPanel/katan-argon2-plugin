@@ -12,27 +12,40 @@
 4. Configure the plugin as you wish.
 
 ### Configuration
-```yaml
-# The length of the random salt (recommended: 16 bytes).
-salt-length = 16
+See the full configuration [here](https://github.com/KatanPanel/katan-argon2-plugin/blob/main/src/main/resources/config.conf).
 
-# The length of the generated hash (recommended: 32 bytes).
-key-length = 32
-
-# The amount of memory used by the algorithm, in quibibytes. 
-# Affect the memory cost (default: 65536 KiB = 64M).
-memory-cost = 65536
-
-# Number of threads used by the algorithm.
-parallelism = 2
-```
-
-### Adding as a dependency to your plugin:
+### How to use
 ```kotlin
 init {
-    dependencyFactory {
-        dependsOn("katan-argon-2")
+    dependencyManager {
+        plugin("katan-argon2")
     }
+}
+```
+
+Hook using the lazily loaded `service` inline function
+```kotlin
+class MyPlugin : KatanPlugin() {
+
+    val hash = service<Hash>()
+
+}
+```
+
+or using Katan `ServicesManager`.
+```kotlin
+class MyPlugin : KatanPlugin() {
+
+    lateinit var hash: Hash
+
+    init {
+        handle(PluginStarted, ::onEnable)
+    }
+
+    fun onEnable() {
+        hash = katan.servicesManager.get<Hash>()
+    }
+
 }
 ```
 
